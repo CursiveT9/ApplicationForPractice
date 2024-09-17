@@ -3,4 +3,5 @@
     <string name="app_name">ApplicationForPractice</string>
     <string name="login_button">Войти</string>
     <string name="registration_button">Зарегистрироваться</string>
+    <string name="forgot_password">Забыли пароль?</string>
 </resources>

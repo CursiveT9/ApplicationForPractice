@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">ApplicationForPractice</string>
+    <string name="desc" translatable="false">SAS</string>
+    <string name="login_button">Log in</string>
+    <string name="registration_button">Sign up</string>
 </resources>

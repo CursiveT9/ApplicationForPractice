@@ -21,6 +21,7 @@ class OnboardActivity : AppCompatActivity() {
         val button = findViewById<Button>(R.id.button1)
         button.setOnClickListener {
             val intent = Intent(this, SignInActivity::class.java)
+            finish()
             startActivity(intent)
         }
     }

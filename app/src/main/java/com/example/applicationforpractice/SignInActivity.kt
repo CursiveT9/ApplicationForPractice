@@ -40,6 +40,7 @@ class SignInActivity : AppCompatActivity() {
                 if (email == fakeEmail && password == fakePassword) {
                     Toast.makeText(this, "Успешный вход", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, HomeActivity::class.java)
+                    finish()
                     startActivity(intent)
                 } else {
                     Toast.makeText(this, "Неправильная электронная почта или пароль", Toast.LENGTH_SHORT).show()

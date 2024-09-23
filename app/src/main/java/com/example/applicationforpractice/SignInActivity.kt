@@ -2,6 +2,7 @@ package com.example.applicationforpractice
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -12,8 +13,14 @@ import androidx.core.view.WindowInsetsCompat
 import java.util.regex.Pattern
 
 class SignInActivity : AppCompatActivity() {
+
+    companion object {
+        private const val TAG = "HomeActivity"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "onCreate called")
         enableEdgeToEdge()
         setContentView(R.layout.activity_sign_in)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.sign_in)) { v, insets ->
@@ -52,6 +59,31 @@ class SignInActivity : AppCompatActivity() {
     private fun isValidEmail(email: String): Boolean {
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
         return Pattern.compile(emailPattern).matcher(email).matches()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart called")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume called")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "onPause called")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop called")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy called")
     }
 
 }

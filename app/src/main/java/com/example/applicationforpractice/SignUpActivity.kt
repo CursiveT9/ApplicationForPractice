@@ -12,37 +12,32 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import java.util.regex.Pattern
 
-class SignInActivity : AppCompatActivity() {
+class SignUpActivity : AppCompatActivity() {
 
     companion object {
-        private const val TAG = "SignInActivity"
+        private const val TAG = "SignUpActivity"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate called")
         enableEdgeToEdge()
-        setContentView(R.layout.activity_sign_in)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.sign_in)) { v, insets ->
+        setContentView(R.layout.activity_sign_up)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.sign_up)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
         val emailInput = findViewById<EditText>(R.id.emailInput)
         val passwordInput = findViewById<EditText>(R.id.passwordInput)
-        val loginButton = findViewById<Button>(R.id.button1)
-        val registerButton = findViewById<Button>(R.id.button2)
-
-        registerButton.setOnClickListener {
-            val intent = Intent(this, SignUpActivity::class.java)
-            finish()
-            startActivity(intent)
-        }
+        val registrationButton = findViewById<Button>(R.id.button2)
 
         val fakeEmail = "test@gmail.com"
         val fakePassword = "123"
 
-        loginButton.setOnClickListener {
+
+
+        registrationButton.setOnClickListener {
             val email = emailInput.text.toString().trim()
             val password = passwordInput.text.toString().trim()
 

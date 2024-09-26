@@ -4,4 +4,7 @@
     <string name="login_button">Log in</string>
     <string name="registration_button">Sign up</string>
     <string name="forgot_password">Forgot password?</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
 </resources>

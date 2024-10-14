@@ -40,7 +40,6 @@ class SignInActivity : AppCompatActivity() {
 
         registerButton.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
-            startActivity(intent)
             startActivityForResult(intent, 1001)
         }
 
@@ -74,14 +73,14 @@ class SignInActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1001 && resultCode == RESULT_OK) {
 
-            val login = data?.getStringExtra("username")
+            val login = data?.getStringExtra("login")
             val email = data?.getStringExtra("email")
-            val parrword = data?.getStringExtra("password")
+            val password = data?.getStringExtra("password")
             if (email != null) {
                 fakeEmail = email
             }
-            if (parrword != null) {
-                fakePassword = parrword
+            if (password != null) {
+                fakePassword = password
             }
 
             val user = data?.getParcelableExtra<User>("user")

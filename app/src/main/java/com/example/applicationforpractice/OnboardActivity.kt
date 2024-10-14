@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -26,8 +27,14 @@ class OnboardActivity : AppCompatActivity() {
             insets
         }
         val button = findViewById<Button>(R.id.button1)
+        val button2 = findViewById<TextView>(R.id.textView)
         button.setOnClickListener {
             val intent = Intent(this, SignInActivity::class.java)
+            finish()
+            startActivity(intent)
+        }
+        button2.setOnClickListener {
+            val intent = Intent(this, SignUpActivity::class.java)
             finish()
             startActivity(intent)
         }

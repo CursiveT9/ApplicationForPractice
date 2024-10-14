@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -33,6 +34,9 @@ class SignUpActivity : AppCompatActivity() {
         val registrationButton = findViewById<Button>(R.id.button2)
 
         registrationButton.setOnClickListener {
+            if (!validateInputs(loginImput, emailInput, passwordInput)) {
+                return@setOnClickListener
+            }
             val login = loginImput.text.toString().trim()
             val email = emailInput.text.toString().trim()
             val password = passwordInput.text.toString().trim()
@@ -45,10 +49,23 @@ class SignUpActivity : AppCompatActivity() {
 
             val user = User(login, email, password)
             resultIntent.putExtra("user", user)
-
             setResult(RESULT_OK, resultIntent)
             finish()
         }
+    }
+
+    private fun validateInputs(loginInput: EditText, emailInput: EditText, passwordInput: EditText): Boolean {
+        if (loginInput.text.isEmpty() || emailInput.text.isEmpty() || passwordInput.text.isEmpty()) {
+            Toast.makeText(this, "Заполните все поля", Toast.LENGTH_SHORT).show()
+            return false
+        } else if (!isValidEmail(emailInput.text.toString().trim())) {
+            Toast.makeText(this, "Неверный формат электронной почты", Toast.LENGTH_SHORT).show()
+            return false
+        } else if (passwordInput.text.toString().trim().length < 3) {
+            Toast.makeText(this, "Пароль должен быть не менее 3 символов", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        return true
     }
 
     private fun isValidEmail(email: String): Boolean {

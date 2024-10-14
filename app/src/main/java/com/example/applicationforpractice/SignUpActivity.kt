@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -29,32 +28,26 @@ class SignUpActivity : AppCompatActivity() {
             insets
         }
         val emailInput = findViewById<EditText>(R.id.emailInput)
+        val loginImput = findViewById<EditText>(R.id.loginInput)
         val passwordInput = findViewById<EditText>(R.id.passwordInput)
         val registrationButton = findViewById<Button>(R.id.button2)
 
-        val fakeEmail = "test@gmail.com"
-        val fakePassword = "123"
-
-
-
         registrationButton.setOnClickListener {
+            val login = loginImput.text.toString().trim()
             val email = emailInput.text.toString().trim()
             val password = passwordInput.text.toString().trim()
 
-            if (!isValidEmail(email)) {
-                Toast.makeText(this, "Неверный формат электронной почты", Toast.LENGTH_SHORT).show()
-            } else if (password.length < 3) {
-                Toast.makeText(this, "Пароль должен быть не менее 3 символов", Toast.LENGTH_SHORT).show()
-            } else {
-                if (email == fakeEmail && password == fakePassword) {
-                    Toast.makeText(this, "Успешный вход", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, HomeActivity::class.java)
-                    finish()
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(this, "Неправильная электронная почта или пароль", Toast.LENGTH_SHORT).show()
-                }
-            }
+            val resultIntent = Intent()
+
+            resultIntent.putExtra("login", login)
+            resultIntent.putExtra("email", email)
+            resultIntent.putExtra("password", password)
+
+            val user = User(login, email, password)
+            resultIntent.putExtra("user", user)
+
+            setResult(RESULT_OK, resultIntent)
+            finish()
         }
     }
 

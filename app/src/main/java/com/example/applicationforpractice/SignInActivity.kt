@@ -18,6 +18,11 @@ class SignInActivity : AppCompatActivity() {
         private const val TAG = "SignInActivity"
     }
 
+    private lateinit var emailInput: EditText
+    private lateinit var passwordInput: EditText
+    private var fakeEmail = "test@gmail.com"
+    private var fakePassword = "123"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate called")
@@ -28,19 +33,16 @@ class SignInActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val emailInput = findViewById<EditText>(R.id.emailInput)
-        val passwordInput = findViewById<EditText>(R.id.passwordInput)
+        emailInput = findViewById<EditText>(R.id.emailInput)
+        passwordInput = findViewById<EditText>(R.id.passwordInput)
         val loginButton = findViewById<Button>(R.id.button1)
         val registerButton = findViewById<Button>(R.id.button2)
 
         registerButton.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
-            finish()
             startActivity(intent)
+            startActivityForResult(intent, 1001)
         }
-
-        val fakeEmail = "test@gmail.com"
-        val fakePassword = "123"
 
         loginButton.setOnClickListener {
             val email = emailInput.text.toString().trim()
@@ -49,7 +51,8 @@ class SignInActivity : AppCompatActivity() {
             if (!isValidEmail(email)) {
                 Toast.makeText(this, "Неверный формат электронной почты", Toast.LENGTH_SHORT).show()
             } else if (password.length < 3) {
-                Toast.makeText(this, "Пароль должен быть не менее 3 символов", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Пароль должен быть не менее 3 символов", Toast.LENGTH_SHORT)
+                    .show()
             } else {
                 if (email == fakeEmail && password == fakePassword) {
                     Toast.makeText(this, "Успешный вход", Toast.LENGTH_SHORT).show()
@@ -57,8 +60,39 @@ class SignInActivity : AppCompatActivity() {
                     finish()
                     startActivity(intent)
                 } else {
-                    Toast.makeText(this, "Неправильная электронная почта или пароль", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        "Неправильная электронная почта или пароль",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1001 && resultCode == RESULT_OK) {
+
+            val login = data?.getStringExtra("username")
+            val email = data?.getStringExtra("email")
+            val parrword = data?.getStringExtra("password")
+            if (email != null) {
+                fakeEmail = email
+            }
+            if (parrword != null) {
+                fakePassword = parrword
+            }
+
+            val user = data?.getParcelableExtra<User>("user")
+
+            if (login != null && email != null) {
+                emailInput.setText(email)
+                Toast.makeText(this, "Добро пожаловать, $login!", Toast.LENGTH_SHORT).show()
+            }
+            if (user != null) {
+                emailInput.setText(user.email)
+                Toast.makeText(this, "Добро пожаловать 2, ${user.login}!", Toast.LENGTH_LONG).show()
             }
         }
     }

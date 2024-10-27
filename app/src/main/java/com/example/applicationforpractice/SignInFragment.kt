@@ -5,12 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import com.example.applicationforpractice.databinding.ActivitySignInBinding
 import java.util.regex.Pattern
 
 class SignInFragment : Fragment() {
@@ -19,56 +18,42 @@ class SignInFragment : Fragment() {
         private const val TAG = "SignInFragment"
     }
 
-    private lateinit var emailInput: EditText
-    private lateinit var passwordInput: EditText
-    private var fakeEmail = "test@gmail.com"
-    private var fakePassword = "123"
+    private var _binding: ActivitySignInBinding? = null
+    private val binding get() = _binding!!
+    private val userViewModel: UserViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.activity_sign_in, container, false)
-        ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.sign_in)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-        emailInput = view.findViewById(R.id.emailInput)
-        passwordInput = view.findViewById(R.id.passwordInput)
-        val loginButton = view.findViewById<Button>(R.id.button1)
-        val registerButton = view.findViewById<Button>(R.id.button2)
+    ): View {
+        _binding = ActivitySignInBinding.inflate(inflater, container, false)
+        val view = binding.root
 
-        val login = arguments?.getString("login")
-        val email = arguments?.getString("email")
-        val password = arguments?.getString("password")
+        val args = arguments?.let { SignInFragmentArgs.fromBundle(it) }
+        binding.emailInput.setText(args?.email)
 
-        fakeEmail = email ?: fakeEmail
-        fakePassword = password ?: fakePassword
-
-        emailInput.setText(email)
-
-        registerButton.setOnClickListener {
-            (activity as MainActivity).navigateToSignUp()
-        }
-
-        loginButton.setOnClickListener {
-            val email = emailInput.text.toString().trim()
-            val password = passwordInput.text.toString().trim()
+        binding.button1.setOnClickListener {
+            val email = binding.emailInput.text.toString().trim()
+            val password = binding.passwordInput.text.toString().trim()
 
             if (!isValidEmail(email)) {
                 Toast.makeText(activity, "Неверный формат электронной почты", Toast.LENGTH_SHORT).show()
             } else if (password.length < 3) {
                 Toast.makeText(activity, "Пароль должен быть не менее 3 символов", Toast.LENGTH_SHORT).show()
             } else {
-                if (email == fakeEmail && password == fakePassword) {
+                if (userViewModel.isUserValid(email, password)) {
                     Toast.makeText(activity, "Успешный вход", Toast.LENGTH_SHORT).show()
-                    (activity as MainActivity).navigateToHome()
+                    findNavController().navigate(R.id.action_signInFragment_to_homeFragment)
                 } else {
                     Toast.makeText(activity, "Неправильная электронная почта или пароль", Toast.LENGTH_SHORT).show()
                 }
             }
         }
+
+        binding.button2.setOnClickListener {
+            findNavController().navigate(R.id.action_signInFragment_to_SignUpFragment)
+        }
+
         return view
     }
 

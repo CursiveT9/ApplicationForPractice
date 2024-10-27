@@ -5,11 +5,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.example.applicationforpractice.databinding.ActivityOnboardBinding
 
 class OnboardFragment : Fragment() {
 
@@ -17,24 +15,26 @@ class OnboardFragment : Fragment() {
         private const val TAG = "OnboardFragment"
     }
 
+    private var _binding: ActivityOnboardBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.activity_onboard, container, false)
-        ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+    ): View {
+        _binding = ActivityOnboardBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+        binding.button1.setOnClickListener {
+            val action = OnboardFragmentDirections.actionOnboardFragmentToSignInFragment("", "", "")
+            findNavController().navigate(action)
         }
-        val button = view.findViewById<Button>(R.id.button1)
-        val button2 = view.findViewById<TextView>(R.id.textView)
-        button.setOnClickListener {
-            (activity as MainActivity).navigateToSignIn()
+
+        binding.textView.setOnClickListener {
+            val action = OnboardFragmentDirections.actionOnboardFragmentToSignUpFragment()
+            findNavController().navigate(action)
         }
-        button2.setOnClickListener {
-            (activity as MainActivity).navigateToSignUp()
-        }
+
         return view
     }
 

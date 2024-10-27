@@ -2,7 +2,6 @@ package com.example.applicationforpractice
 
 import android.os.Parcel
 import android.os.Parcelable
-import java.io.Serializable
 
 data class User(val login: String, val email: String, val password: String) : Parcelable {
 

@@ -7,6 +7,7 @@ pluginManagement {
                 includeGroupByRegex("androidx.*")
             }
         }
+//        maven("https://kotlin.bintray.com/kotlinx")
         mavenCentral()
         gradlePluginPortal()
     }
@@ -19,5 +20,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ApplicationForPractice"
+rootProject.name = "SimpleApp"
 include(":app")

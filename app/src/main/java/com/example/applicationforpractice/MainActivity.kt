@@ -2,47 +2,29 @@ package com.example.applicationforpractice
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import com.example.applicationforpractice.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var navController: NavController
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
+
         if (savedInstanceState == null) {
-            navigateToOnboard()
+            navController.navigate(R.id.onboardFragment)
         }
     }
 
-    private fun navigateToFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-            .commit()
-    }
-
-    fun navigateToOnboard() {
-        navigateToFragment(OnboardFragment())
-    }
-
-    fun navigateToSignIn() {
-        navigateToFragment(SignInFragment())
-    }
-
-    fun navigateToSignIn(bundle: Bundle? = null) {
-        val fragment = SignInFragment().apply {
-            arguments = bundle
-        }
-        navigateToFragment(fragment)
-    }
-
-    fun navigateToSignUp() {
-        navigateToFragment(SignUpFragment())
-    }
-
-    fun navigateToHome() {
-        navigateToFragment(HomeFragment())
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }

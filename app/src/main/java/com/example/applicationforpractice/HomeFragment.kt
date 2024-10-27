@@ -5,9 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import io.ktor.client.*
+import io.ktor.client.engine.cio.*
 
 class HomeFragment : Fragment() {
 
@@ -15,24 +19,36 @@ class HomeFragment : Fragment() {
         private const val TAG = "HomeFragment"
     }
 
+    private lateinit var characterViewModel: CharacterViewModel
+    private lateinit var characterAdapter: CharacterAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.activity_home, container, false)
 
-        val chatRecyclerView = view.findViewById<RecyclerView>(R.id.chatRecyclerView)
-        chatRecyclerView.layoutManager = LinearLayoutManager(context)
+        val characterRecyclerView = view.findViewById<RecyclerView>(R.id.characterRecyclerView)
+        characterRecyclerView.layoutManager = LinearLayoutManager(context)
 
-        val fakeChatList = listOf(
-            Chat("Иван Петров", R.drawable.ic_user, "Привет! Как дела?", "12:45"),
-            Chat("Анастасия Сидорова", R.drawable.ic_user, "Когда встречаемся?", "11:30"),
-            Chat("Максим Смирнов", R.drawable.ic_user, "Увидимся завтра?", "10:15"),
-            Chat("Дарья Иванова", R.drawable.ic_user, "Отлично!", "09:00")
-        )
+        val client = HttpClient(CIO)
+        val repository = CharacterRepository(client)
+        characterViewModel = ViewModelProvider(this, CharacterViewModelFactory(repository)).get(CharacterViewModel::class.java)
 
-        val chatAdapter = ChatAdapter(fakeChatList)
-        chatRecyclerView.adapter = chatAdapter
+        characterViewModel.fetchCharacters(characterViewModel.getCurrentPage())
+
+        characterViewModel.characters.observe(viewLifecycleOwner) { characters ->
+            characterAdapter = CharacterAdapter(characters)
+            characterRecyclerView.adapter = characterAdapter
+        }
+
+        view.findViewById<Button>(R.id.previousPageButton).setOnClickListener {
+            characterViewModel.previousPage()
+        }
+
+        view.findViewById<Button>(R.id.nextPageButton).setOnClickListener {
+            characterViewModel.nextPage()
+        }
 
         return view
     }

@@ -71,18 +71,39 @@
         app:srcCompat="@drawable/ic_user" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chatRecyclerView"
+        android:id="@+id/characterRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="80dp"
         android:clipToPadding="false"
         android:padding="8dp"
         app:layout_constraintBottom_toTopOf="@id/imageView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/previousPageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Previous"
+        app:layout_constraintBottom_toTopOf="@+id/imageView2"
+        app:layout_constraintEnd_toStartOf="@+id/nextPageButton"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/nextPageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="Next"
+        app:layout_constraintBottom_toTopOf="@+id/imageView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/previousPageButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.applicationforpractice.databinding.HomeFragmentBinding
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 
@@ -21,15 +22,17 @@ class HomeFragment : Fragment() {
 
     private lateinit var characterViewModel: CharacterViewModel
     private lateinit var characterAdapter: CharacterAdapter
+    private var _binding: HomeFragmentBinding? = null
+    private val binding get() = _binding ?: throw IllegalStateException("View binding is only available between onCreateView and onDestroyView")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.activity_home, container, false)
+    ): View {
+        _binding = HomeFragmentBinding.inflate(inflater, container, false)
+        val view = binding.root
 
-        val characterRecyclerView = view.findViewById<RecyclerView>(R.id.characterRecyclerView)
-        characterRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.characterRecyclerView.layoutManager = LinearLayoutManager(context)
 
         val client = HttpClient(CIO)
         val repository = CharacterRepository(client)
@@ -39,18 +42,23 @@ class HomeFragment : Fragment() {
 
         characterViewModel.characters.observe(viewLifecycleOwner) { characters ->
             characterAdapter = CharacterAdapter(characters)
-            characterRecyclerView.adapter = characterAdapter
+            binding.characterRecyclerView.adapter = characterAdapter
         }
 
-        view.findViewById<Button>(R.id.previousPageButton).setOnClickListener {
+        binding.previousPageButton.setOnClickListener {
             characterViewModel.previousPage()
         }
 
-        view.findViewById<Button>(R.id.nextPageButton).setOnClickListener {
+        binding.nextPageButton.setOnClickListener {
             characterViewModel.nextPage()
         }
 
         return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onStart() {

@@ -16,7 +16,7 @@ class OnboardFragment : Fragment() {
     }
 
     private var _binding: ActivityOnboardBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding ?: throw IllegalStateException("View binding is only sas")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

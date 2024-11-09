@@ -5,16 +5,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.applicationforpractice.databinding.CharacterItemBinding
 
 class CharacterAdapter(private val characters: List<Character>) : RecyclerView.Adapter<CharacterAdapter.CharacterViewHolder>() {
 
-    class CharacterViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val characterName: TextView = view.findViewById(R.id.characterName)
-        val characterCulture: TextView = view.findViewById(R.id.characterCulture)
-        val characterBorn: TextView = view.findViewById(R.id.characterBorn)
-        val characterTitles: TextView = view.findViewById(R.id.characterTitles)
-        val characterAliases: TextView = view.findViewById(R.id.characterAliases)
-        val characterPlayedBy: TextView = view.findViewById(R.id.characterPlayedBy)
+    class CharacterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val binding = CharacterItemBinding.bind(itemView)
+        val characterName: TextView = binding.characterName
+        val characterCulture: TextView = binding.characterCulture
+        val characterBorn: TextView = binding.characterBorn
+        val characterTitles: TextView = binding.characterTitles
+        val characterAliases: TextView = binding.characterAliases
+        val characterPlayedBy: TextView = binding.characterPlayedBy
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {

@@ -86,4 +86,9 @@ class SignInFragment : Fragment() {
         super.onDestroy()
         Log.d(TAG, "onDestroy called")
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

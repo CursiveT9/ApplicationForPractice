@@ -10,7 +10,7 @@ class CharacterViewModel(private val repository: CharacterRepository) : ViewMode
     private val _characters = MutableLiveData<List<Character>>()
     val characters: LiveData<List<Character>> get() = _characters
 
-    private val pageSize = 50
+    private val pageSize = 3
     private var currentPage = 901/pageSize + 1
 
     fun fetchCharacters(page: Int) {
@@ -19,7 +19,7 @@ class CharacterViewModel(private val repository: CharacterRepository) : ViewMode
                 val characterList = repository.getCharacters(page, pageSize)
                 _characters.value = characterList
             } catch (e: Exception) {
-                e.printStackTrace()
+                // Обработка ошибок
             }
         }
     }

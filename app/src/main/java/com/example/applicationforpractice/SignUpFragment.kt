@@ -18,8 +18,9 @@ class SignUpFragment : Fragment() {
         private const val TAG = "SignUpFragment"
     }
 
+    private val users = mutableListOf<Pair<String, String>>() // Список пар (email, password)
     private var _binding: ActivitySignUpBinding? = null
-    private val binding get() = _binding ?: throw IllegalStateException("View binding is only sas")
+    private val binding get() = _binding!!
     private val userViewModel: UserViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -40,8 +41,7 @@ class SignUpFragment : Fragment() {
             userViewModel.addUser(email, password)
             Toast.makeText(activity, "Регистрация успешна", Toast.LENGTH_SHORT).show()
 
-            val user = User(login, email, password)
-            val action = SignUpFragmentDirections.actionSignUpFragmentToSignInFragment(user)
+            val action = SignUpFragmentDirections.actionSignUpFragmentToSignInFragment(login, email, password)
             findNavController().navigate(action)
         }
         return view

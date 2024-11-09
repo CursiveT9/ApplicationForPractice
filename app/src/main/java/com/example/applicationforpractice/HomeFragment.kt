@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.applicationforpractice.databinding.ActivityHomeBinding
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 
@@ -21,14 +22,17 @@ class HomeFragment : Fragment() {
 
     private lateinit var characterViewModel: CharacterViewModel
     private lateinit var characterAdapter: CharacterAdapter
+    private var _binding: ActivityHomeBinding? = null
+    private val binding get() = _binding ?: throw IllegalStateException("Trying to access the binding outside of the view lifecycle.")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.activity_home, container, false)
+        _binding = ActivityHomeBinding.inflate(inflater, container, false)
+        val view = binding.root
 
-        val characterRecyclerView = view.findViewById<RecyclerView>(R.id.characterRecyclerView)
+        val characterRecyclerView = binding.characterRecyclerView
         characterRecyclerView.layoutManager = LinearLayoutManager(context)
 
         val client = HttpClient(CIO)
@@ -42,11 +46,11 @@ class HomeFragment : Fragment() {
             characterRecyclerView.adapter = characterAdapter
         }
 
-        view.findViewById<Button>(R.id.previousPageButton).setOnClickListener {
+        binding.previousPageButton.setOnClickListener {
             characterViewModel.previousPage()
         }
 
-        view.findViewById<Button>(R.id.nextPageButton).setOnClickListener {
+        binding.nextPageButton.setOnClickListener {
             characterViewModel.nextPage()
         }
 

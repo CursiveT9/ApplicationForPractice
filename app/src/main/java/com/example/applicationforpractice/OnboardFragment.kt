@@ -16,7 +16,7 @@ class OnboardFragment : Fragment() {
     }
 
     private var _binding: ActivityOnboardBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding ?: throw IllegalStateException("Trying to access the binding outside of the view lifecycle.")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,7 +26,8 @@ class OnboardFragment : Fragment() {
         val view = binding.root
 
         binding.button1.setOnClickListener {
-            val action = OnboardFragmentDirections.actionOnboardFragmentToSignInFragment("", "", "")
+            val user = User("", "", "")
+            val action = OnboardFragmentDirections.actionOnboardFragmentToSignInFragment(user)
             findNavController().navigate(action)
         }
 

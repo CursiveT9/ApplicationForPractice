@@ -19,7 +19,7 @@ class SignInFragment : Fragment() {
     }
 
     private var _binding: ActivitySignInBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding ?: throw IllegalStateException("Trying to access the binding outside of the view lifecycle.")
     private val userViewModel: UserViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -30,7 +30,7 @@ class SignInFragment : Fragment() {
         val view = binding.root
 
         val args = arguments?.let { SignInFragmentArgs.fromBundle(it) }
-        binding.emailInput.setText(args?.email)
+        binding.emailInput.setText(args?.user?.email)
 
         binding.button1.setOnClickListener {
             val email = binding.emailInput.text.toString().trim()

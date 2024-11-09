@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.example.applicationforpractice.databinding.ActivityOnboardBinding
 
@@ -16,7 +17,7 @@ class OnboardFragment : Fragment() {
     }
 
     private var _binding: ActivityOnboardBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding ?: throw IllegalStateException("View binding is only sas")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,7 +27,8 @@ class OnboardFragment : Fragment() {
         val view = binding.root
 
         binding.button1.setOnClickListener {
-            val action = OnboardFragmentDirections.actionOnboardFragmentToSignInFragment("", "", "")
+            val user = User("", "", "")
+            val action = OnboardFragmentDirections.actionOnboardFragmentToSignInFragment(user)
             findNavController().navigate(action)
         }
 

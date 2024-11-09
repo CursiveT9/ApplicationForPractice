@@ -20,14 +20,8 @@
         android:name="com.example.applicationforpractice.SignInFragment"
         android:label="SignInFragment">
         <argument
-            android:name="login"
-            app:argType="string" />
-        <argument
-            android:name="email"
-            app:argType="string" />
-        <argument
-            android:name="password"
-            app:argType="string" />
+            android:name="user"
+            app:argType="com.example.applicationforpractice.User" />
         <action
             android:id="@+id/action_signInFragment_to_homeFragment"
             app:destination="@id/homeFragment" />

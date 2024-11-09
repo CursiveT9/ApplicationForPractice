@@ -19,7 +19,7 @@ class SignInFragment : Fragment() {
     }
 
     private var _binding: ActivitySignInBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding ?: throw IllegalStateException("View binding is only sas")
     private val userViewModel: UserViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -30,7 +30,9 @@ class SignInFragment : Fragment() {
         val view = binding.root
 
         val args = arguments?.let { SignInFragmentArgs.fromBundle(it) }
-        binding.emailInput.setText(args?.email)
+        val user = args?.user ?: User("login", "email", "password")
+        binding.emailInput.setText(user.email)
+        binding.passwordInput.setText(user.password)
 
         binding.button1.setOnClickListener {
             val email = binding.emailInput.text.toString().trim()

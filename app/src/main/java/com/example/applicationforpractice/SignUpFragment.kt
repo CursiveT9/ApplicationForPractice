@@ -18,7 +18,6 @@ class SignUpFragment : Fragment() {
         private const val TAG = "SignUpFragment"
     }
 
-    private val users = mutableListOf<Pair<String, String>>() // Список пар (email, password)
     private var _binding: ActivitySignUpBinding? = null
     private val binding get() = _binding ?: throw IllegalStateException("View binding is only sas")
     private val userViewModel: UserViewModel by activityViewModels()

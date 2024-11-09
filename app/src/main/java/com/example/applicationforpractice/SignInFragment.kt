@@ -30,8 +30,7 @@ class SignInFragment : Fragment() {
         val view = binding.root
 
         val args = arguments?.let { SignInFragmentArgs.fromBundle(it) }
-        val user = args.user
-        binding.loginInput.setText(user.login)
+        val user = args?.user ?: User("login", "email", "password")
         binding.emailInput.setText(user.email)
         binding.passwordInput.setText(user.password)
 

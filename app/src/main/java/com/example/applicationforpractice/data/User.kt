@@ -1,4 +1,4 @@
-package com.example.applicationforpractice
+package com.example.applicationforpractice.data
 
 import android.os.Parcel
 import android.os.Parcelable

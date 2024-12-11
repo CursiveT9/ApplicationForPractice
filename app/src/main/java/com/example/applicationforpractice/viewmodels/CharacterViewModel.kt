@@ -1,9 +1,11 @@
-package com.example.applicationforpractice
+package com.example.applicationforpractice.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.applicationforpractice.api.CharacterRepository
+import com.example.applicationforpractice.data.Character
 import kotlinx.coroutines.launch
 
 class CharacterViewModel(private val repository: CharacterRepository) : ViewModel() {

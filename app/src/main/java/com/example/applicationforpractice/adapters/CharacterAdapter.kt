@@ -1,10 +1,12 @@
-package com.example.applicationforpractice
+package com.example.applicationforpractice.adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.applicationforpractice.R
+import com.example.applicationforpractice.data.Character
 import com.example.applicationforpractice.databinding.CharacterItemBinding
 
 class CharacterAdapter(private val characters: List<Character>) : RecyclerView.Adapter<CharacterAdapter.CharacterViewHolder>() {

@@ -1,4 +1,4 @@
-package com.example.applicationforpractice
+package com.example.applicationforpractice.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.applicationforpractice.R
+import com.example.applicationforpractice.data.Chat
 
 class ChatAdapter(private val chatList: List<Chat>) : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
 

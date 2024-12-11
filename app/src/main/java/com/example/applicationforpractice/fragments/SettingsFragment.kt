@@ -1,4 +1,4 @@
-package com.example.applicationforpractice
+package com.example.applicationforpractice.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -18,6 +18,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.datastore.preferences.core.edit
 import kotlinx.coroutines.flow.first
 import androidx.navigation.fragment.findNavController
+import com.example.applicationforpractice.R
 import kotlinx.coroutines.launch
 import com.example.applicationforpractice.databinding.FragmentSettingsBinding
 import java.io.File

@@ -14,4 +14,5 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.androidx.navigation.safe.args) apply false
     kotlin("plugin.serialization") version "1.6.0"
+    kotlin("kapt") version "1.9.0"
 }

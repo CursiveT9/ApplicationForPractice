@@ -1,4 +1,4 @@
-package com.example.applicationforpractice
+package com.example.applicationforpractice.data
 
 import kotlinx.serialization.Serializable
 

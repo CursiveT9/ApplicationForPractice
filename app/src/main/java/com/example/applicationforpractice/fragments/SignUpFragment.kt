@@ -1,4 +1,4 @@
-package com.example.applicationforpractice
+package com.example.applicationforpractice.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +9,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.example.applicationforpractice.data.User
 import com.example.applicationforpractice.databinding.ActivitySignUpBinding
+import com.example.applicationforpractice.viewmodels.UserViewModel
 import java.util.regex.Pattern
 
 class SignUpFragment : Fragment() {

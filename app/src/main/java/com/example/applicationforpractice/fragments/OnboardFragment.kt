@@ -1,4 +1,4 @@
-package com.example.applicationforpractice
+package com.example.applicationforpractice.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.applicationforpractice.data.User
 import com.example.applicationforpractice.databinding.ActivityOnboardBinding
 
 class OnboardFragment : Fragment() {

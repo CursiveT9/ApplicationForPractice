@@ -1,31 +1,26 @@
-package com.example.applicationforpractice
+package com.example.applicationforpractice.fragments
 
 import android.content.ContentValues
-import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.navigation.fragment.findNavController
+import com.example.applicationforpractice.R
+import com.example.applicationforpractice.adapters.CharacterAdapter
+import com.example.applicationforpractice.api.CharacterRepository
+import com.example.applicationforpractice.data.Character
 import com.example.applicationforpractice.databinding.ActivityHomeBinding
+import com.example.applicationforpractice.viewmodels.CharacterViewModel
+import com.example.applicationforpractice.viewmodels.CharacterViewModelFactory
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
-import java.io.BufferedWriter
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 import java.io.OutputStream
-import java.io.OutputStreamWriter
 
 class HomeFragment : Fragment() {
 

@@ -1,5 +1,6 @@
-package com.example.applicationforpractice
+package com.example.applicationforpractice.api
 
+import com.example.applicationforpractice.data.Character
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*

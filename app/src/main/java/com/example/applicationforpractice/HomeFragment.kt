@@ -1,11 +1,17 @@
 package com.example.applicationforpractice
 
+import android.content.ContentValues
+import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +20,12 @@ import androidx.navigation.fragment.findNavController
 import com.example.applicationforpractice.databinding.ActivityHomeBinding
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStream
+import java.io.OutputStreamWriter
 
 class HomeFragment : Fragment() {
 
@@ -24,7 +36,9 @@ class HomeFragment : Fragment() {
     private lateinit var characterViewModel: CharacterViewModel
     private lateinit var characterAdapter: CharacterAdapter
     private var _binding: ActivityHomeBinding? = null
-    private val binding get() = _binding ?: throw IllegalStateException("Trying to access the binding outside of the view lifecycle.")
+    private val binding
+        get() = _binding
+            ?: throw IllegalStateException("Trying to access the binding outside of the view lifecycle.")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +52,10 @@ class HomeFragment : Fragment() {
 
         val client = HttpClient(CIO)
         val repository = CharacterRepository(client)
-        characterViewModel = ViewModelProvider(this, CharacterViewModelFactory(repository)).get(CharacterViewModel::class.java)
+        characterViewModel = ViewModelProvider(
+            this,
+            CharacterViewModelFactory(repository)
+        ).get(CharacterViewModel::class.java)
 
         characterViewModel.fetchCharacters(characterViewModel.getCurrentPage())
 
@@ -59,7 +76,39 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_homeFragment_to_settingsFragment)
         }
 
+        characterViewModel.characters.observe(viewLifecycleOwner) { characters ->
+            if (characters.isNotEmpty()) {
+                saveToDocuments(characters)
+            }
+        }
+
         return view
+    }
+
+    // Метод для записи в /storage/emulated/0/Documents/
+    fun saveToDocuments(characters: List<Character>) {
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, "19.txt") // имя файла
+            put(MediaStore.MediaColumns.MIME_TYPE, "text/plain")
+            put(MediaStore.MediaColumns.RELATIVE_PATH, "Documents/") // Путь, куда сохраняем файл
+        }
+        val contentResolver = requireContext().contentResolver
+        val uri = contentResolver.insert(MediaStore.Files.getContentUri("external"), contentValues)
+
+        uri?.let {
+            try {
+                val outputStream: OutputStream? = contentResolver.openOutputStream(uri)
+                outputStream?.bufferedWriter()?.use { writer ->
+                    for (character in characters) {
+                        writer.write(character.name) // или character.toString()
+                        writer.newLine()
+                    }
+                }
+                Log.d("HomeFragment", "File saved to Documents successfully.")
+            } catch (e: Exception) {
+                Log.e("HomeFragment", "Error saving file", e)
+            }
+        }
     }
 
     override fun onStart() {

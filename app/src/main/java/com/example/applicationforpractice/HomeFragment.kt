@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.navigation.fragment.findNavController
 import com.example.applicationforpractice.databinding.ActivityHomeBinding
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
@@ -52,6 +53,10 @@ class HomeFragment : Fragment() {
 
         binding.nextPageButton.setOnClickListener {
             characterViewModel.nextPage()
+        }
+
+        binding.imageButton4.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_settingsFragment)
         }
 
         return view

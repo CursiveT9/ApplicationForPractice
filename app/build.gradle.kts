@@ -55,6 +55,9 @@ android {
 
 dependencies {
     val nav_version = "2.8.2"
+
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+
     // Navigation
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation("androidx.navigation:navigation-fragment:$nav_version")

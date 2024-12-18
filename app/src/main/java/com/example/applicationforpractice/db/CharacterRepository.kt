@@ -1,25 +1,57 @@
 package com.example.applicationforpractice.db
 
+import com.example.applicationforpractice.api.ApiRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 
-class CharacterRepository(private val characterDao: CharacterDao) {
+class CharacterRepository(
+    private val characterDao: CharacterDao,
+    private val apiRepository: ApiRepository
+) {
+    val allCharacters: Flow<List<CharacterEntity>> = characterDao.readAllCharacters()
+    private val pageSize = 50
 
-    val readAllCharacters: Flow<List<CharacterEntity>> = characterDao.readAllCharacters()
+    // Проверка, есть ли данные для конкретной страницы в базе данных
+    suspend fun isPageLoaded(page: Int): Boolean {
+        val offset = (page - 1) * pageSize
+        val characters = characterDao.readAllCharacters().first()
+        return characters.size > offset
+    }
 
-    fun insertCharacters(characters: List<CharacterEntity>) {
+    suspend fun fetchCharactersFromApi(page: Int, pageSize: Int): List<CharacterEntity> {
+        val charactersFromApi = apiRepository.getCharacters(page, pageSize)
+        return charactersFromApi.map {
+            CharacterEntity(
+                id = it.url.split("/").last().toIntOrNull() ?: 0,
+                name = it.name,
+                culture = it.culture,
+                born = it.born,
+                titles = it.titles.joinToString(", "),
+                aliases = it.aliases.joinToString(", "),
+                playedBy = it.playedBy.joinToString(", ")
+            )
+        }
+    }
+
+    suspend fun insertCharacters(characters: List<CharacterEntity>) {
         characterDao.insertCharacters(characters)
     }
 
-    fun deleteAllCharacters() {
-        characterDao.deleteAllCharacters()
+    suspend fun getCharactersForPage(page: Int): List<CharacterEntity> {
+        val pageSize = 50
+        // Рассчитываем диапазон ID для текущей страницы
+        val minId = (page - 1) * pageSize + 1
+        val maxId = page * pageSize
+
+        // Получаем все персонажи из базы
+        val allCharacters = characterDao.readAllCharacters().first()
+
+        // Фильтруем персонажей по ID
+        return allCharacters.filter { character ->
+            character.id in minId..maxId
+        }
     }
 
-    fun getCharacterById(id: Int): Flow<List<CharacterEntity>> {
-        return characterDao.getCharacterById(id)
-    }
 
-    fun replaceCharacters(characters: List<CharacterEntity>) {
-        characterDao.replaceCharacters(characters)
-    }
 
 }

@@ -8,8 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.applicationforpractice.R
 import com.example.applicationforpractice.data.Character
 import com.example.applicationforpractice.databinding.CharacterItemBinding
+import com.example.applicationforpractice.db.CharacterEntity
 
-class CharacterAdapter(private val characters: List<Character>) : RecyclerView.Adapter<CharacterAdapter.CharacterViewHolder>() {
+class CharacterAdapter(private var characters: List<CharacterEntity>) : RecyclerView.Adapter<CharacterAdapter.CharacterViewHolder>() {
 
     class CharacterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = CharacterItemBinding.bind(itemView)
@@ -28,15 +29,24 @@ class CharacterAdapter(private val characters: List<Character>) : RecyclerView.A
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
         val character = characters[position]
-        holder.characterName.text = if (character.name.isNotEmpty()) character.name else "Unknown Name"
-        holder.characterCulture.text = if (character.culture.isNotEmpty()) character.culture else "Unknown Culture"
-        holder.characterBorn.text = if (character.born.isNotEmpty()) character.born else "Unknown Birth"
-        holder.characterTitles.text = if (character.titles.isNotEmpty()) character.titles.joinToString(", ") else "No Titles"
-        holder.characterAliases.text = if (character.aliases.isNotEmpty()) character.aliases.joinToString(", ") else "No Aliases"
-        holder.characterPlayedBy.text = if (character.playedBy.isNotEmpty()) character.playedBy.joinToString(", ") else "Not Portrayed"
+        holder.characterName.text = character.name ?: "Unknown Name"
+        holder.characterCulture.text = character.culture ?: "Unknown Culture"
+        holder.characterBorn.text = character.born ?: "Unknown Birth"
+        holder.characterTitles.text = character.titles ?: "No Titles"
+        holder.characterAliases.text = character.aliases ?: "No Aliases"
+        holder.characterPlayedBy.text = character.playedBy ?: "Not Portrayed"
     }
 
     override fun getItemCount(): Int {
         return characters.size
+    }
+
+    // Метод для обновления данных в адаптере
+    fun updateCharacters(newCharacters: List<CharacterEntity>) {
+        // Сравниваем новые данные с текущими, если они изменились, обновляем список
+        if (characters != newCharacters) {
+            characters = newCharacters
+            notifyDataSetChanged() // Уведомляем адаптер о том, что данные обновились
+        }
     }
 }

@@ -2,7 +2,8 @@ package com.example.applicationforpractice.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.applicationforpractice.api.CharacterRepository
+import com.example.applicationforpractice.api.ApiRepository
+import com.example.applicationforpractice.db.CharacterRepository
 
 class CharacterViewModelFactory(private val repository: CharacterRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -12,3 +13,4 @@ class CharacterViewModelFactory(private val repository: CharacterRepository) : V
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
+

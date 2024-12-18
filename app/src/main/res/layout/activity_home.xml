@@ -18,6 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/rectangle" />
 
+    <!-- Кнопки для поиска, сердечка, сообщений и профиля -->
     <ImageButton
         android:id="@+id/imageButton1"
         android:layout_width="wrap_content"
@@ -77,7 +78,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="160dp"
         android:clipToPadding="false"
         android:padding="8dp"
         app:layout_constraintBottom_toTopOf="@id/imageView2"
@@ -85,14 +86,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Кнопки для переключения страниц -->
     <Button
         android:id="@+id/previousPageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:text="Previous"
         app:layout_constraintBottom_toTopOf="@+id/imageView2"
-        app:layout_constraintEnd_toStartOf="@+id/nextPageButton"
+        app:layout_constraintEnd_toStartOf="@+id/goToPageButton"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -104,6 +107,30 @@
         android:text="Next"
         app:layout_constraintBottom_toTopOf="@+id/imageView2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/goToPageButton" />
+
+    <!-- Элементы для ввода номера страницы и перехода -->
+    <EditText
+        android:id="@+id/pageNumberEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:hint="Enter page number"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/goToPageButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/goToPageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Go to Page"
+        app:layout_constraintBottom_toTopOf="@+id/imageView2"
+        app:layout_constraintEnd_toStartOf="@+id/nextPageButton"
         app:layout_constraintStart_toEndOf="@+id/previousPageButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

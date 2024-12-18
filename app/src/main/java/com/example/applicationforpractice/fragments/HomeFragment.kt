@@ -13,9 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.navigation.fragment.findNavController
 import com.example.applicationforpractice.R
 import com.example.applicationforpractice.adapters.CharacterAdapter
-import com.example.applicationforpractice.api.CharacterRepository
-import com.example.applicationforpractice.data.Character
+import com.example.applicationforpractice.api.ApiRepository
 import com.example.applicationforpractice.databinding.ActivityHomeBinding
+import com.example.applicationforpractice.db.CharacterDatabase
+import com.example.applicationforpractice.db.CharacterEntity
+import com.example.applicationforpractice.db.CharacterRepository
 import com.example.applicationforpractice.viewmodels.CharacterViewModel
 import com.example.applicationforpractice.viewmodels.CharacterViewModelFactory
 import io.ktor.client.*
@@ -42,23 +44,31 @@ class HomeFragment : Fragment() {
         _binding = ActivityHomeBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        // Настройка RecyclerView
         val characterRecyclerView = binding.characterRecyclerView
         characterRecyclerView.layoutManager = LinearLayoutManager(context)
+        characterAdapter = CharacterAdapter(emptyList())
+        characterRecyclerView.adapter = characterAdapter
 
-        val client = HttpClient(CIO)
-        val repository = CharacterRepository(client)
+        // Инициализация ViewModel
+        val dao = CharacterDatabase.getDatabase(requireContext()).characterDao()
+        val apiRepository = ApiRepository(HttpClient(CIO))  // создаем объект ApiRepository
+        val repository = CharacterRepository(dao, apiRepository)  // передаем CharacterRepository
         characterViewModel = ViewModelProvider(
             this,
             CharacterViewModelFactory(repository)
         ).get(CharacterViewModel::class.java)
 
-        characterViewModel.fetchCharacters(characterViewModel.getCurrentPage())
-
+        // Наблюдение за данными из базы данных
         characterViewModel.characters.observe(viewLifecycleOwner) { characters ->
-            characterAdapter = CharacterAdapter(characters)
-            characterRecyclerView.adapter = characterAdapter
+            characterAdapter.updateCharacters(characters) // Обновление данных в адаптере
+            Log.d(TAG, "Данные обновлены") // Лог для проверки
         }
 
+        // Запрос данных при загрузке экрана
+        characterViewModel.fetchCharacters(characterViewModel.getCurrentPage())
+
+        // Обработчики кнопок для переключения страниц
         binding.previousPageButton.setOnClickListener {
             characterViewModel.previousPage()
         }
@@ -71,17 +81,23 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_homeFragment_to_settingsFragment)
         }
 
-        characterViewModel.characters.observe(viewLifecycleOwner) { characters ->
-            if (characters.isNotEmpty()) {
-                saveToDocuments(characters)
-            }
+        binding.goToPageButton.setOnClickListener {
+            val page = binding.pageNumberEditText.text.toString().toIntOrNull()
+            characterViewModel.setCurrentPage(page ?: 19)
+            characterViewModel.fetchCharacters(page ?: 19)
         }
+
+//        characterViewModel.characters.observe(viewLifecycleOwner) { characters ->
+//            if (characters.isNotEmpty()) {
+//                saveToDocuments(characters)
+//            }
+//        }
 
         return view
     }
 
     // Метод для записи в /storage/emulated/0/Documents/
-    fun saveToDocuments(characters: List<Character>) {
+    fun saveToDocuments(characters: List<CharacterEntity>) {
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, "19.txt") // имя файла
             put(MediaStore.MediaColumns.MIME_TYPE, "text/plain")

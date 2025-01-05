@@ -1,5 +1,6 @@
 package com.example.applicationforpractice.db
 
+import androidx.lifecycle.LiveData
 import com.example.applicationforpractice.api.ApiRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -10,6 +11,10 @@ class CharacterRepository(
 ) {
     val allCharacters: Flow<List<CharacterEntity>> = characterDao.readAllCharacters()
     private val pageSize = 50
+
+    fun getAllCharacters1(): Flow<List<CharacterEntity>> {
+        return characterDao.readAllCharacters() // предполагаем, что dao возвращает LiveData
+    }
 
     // Проверка, есть ли данные для конкретной страницы в базе данных
     suspend fun isPageLoaded(page: Int): Boolean {

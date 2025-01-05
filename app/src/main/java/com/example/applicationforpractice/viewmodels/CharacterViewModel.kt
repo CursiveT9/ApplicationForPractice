@@ -30,7 +30,21 @@ class CharacterViewModel(
         currentPage = page
     }
 
-    val characters: LiveData<List<CharacterEntity>> = repository.allCharacters.asLiveData()
+    // LiveData для отображения списка персонажей на экране
+    private val _characters = MutableLiveData<List<CharacterEntity>>()
+    val characters: LiveData<List<CharacterEntity>> = _characters // Публичное свойство для наблюдения
+
+    init {
+        // Подписываемся на Flow из репозитория
+        viewModelScope.launch {
+            repository.getAllCharacters1().collect { updatedCharacters ->
+                // Каждый раз, когда данные изменяются, обновляем LiveData
+                _characters.postValue(updatedCharacters)
+                // Автоматически вызываем fetchCharacters для перезагрузки данных
+                fetchCharacters(currentPage)
+            }
+        }
+    }
 
     // Функция для загрузки данных для текущей страницы
     fun fetchCharacters(page: Int) {
@@ -43,6 +57,7 @@ class CharacterViewModel(
                 Log.d("CharacterPage", "Total characters in DB: ${allCharacters.size}")
 
                 // Рассчитываем диапазон ID для текущей страницы
+                val pageSize = 50
                 val minId = (page - 1) * pageSize + 1
                 val maxId = page * pageSize
 
@@ -66,10 +81,10 @@ class CharacterViewModel(
 
                     // Получаем обновленные данные для страницы
                     val updatedCharactersForPage = repository.getCharactersForPage(page)
-                    // Теперь обновление LiveData произойдет автоматически через Flow
+                    _characters.postValue(updatedCharactersForPage) // Обновление LiveData
                 } else {
                     // Если данные есть, просто обновляем LiveData
-                    // Flow автоматически обновит LiveData при изменениях в базе
+                    _characters.postValue(charactersForPage)
                 }
 
                 // Логируем всех персонажей из базы
@@ -82,6 +97,8 @@ class CharacterViewModel(
             }
         }
     }
+
+
 
     // Переход на следующую страницу
     fun nextPage() {
@@ -100,3 +117,7 @@ class CharacterViewModel(
     // Получение текущей страницы
     fun getCurrentPage() = currentPage
 }
+
+
+
+

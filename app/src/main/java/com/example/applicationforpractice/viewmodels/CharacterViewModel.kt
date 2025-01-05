@@ -30,9 +30,7 @@ class CharacterViewModel(
         currentPage = page
     }
 
-    // LiveData для отображения списка персонажей на экране
-    private val _characters = MutableLiveData<List<CharacterEntity>>()
-    val characters: LiveData<List<CharacterEntity>> = _characters // Публичное свойство для наблюдения
+    val characters: LiveData<List<CharacterEntity>> = repository.allCharacters.asLiveData()
 
     // Функция для загрузки данных для текущей страницы
     fun fetchCharacters(page: Int) {
@@ -45,7 +43,6 @@ class CharacterViewModel(
                 Log.d("CharacterPage", "Total characters in DB: ${allCharacters.size}")
 
                 // Рассчитываем диапазон ID для текущей страницы
-                val pageSize = 50
                 val minId = (page - 1) * pageSize + 1
                 val maxId = page * pageSize
 
@@ -69,10 +66,10 @@ class CharacterViewModel(
 
                     // Получаем обновленные данные для страницы
                     val updatedCharactersForPage = repository.getCharactersForPage(page)
-                    _characters.postValue(updatedCharactersForPage) // Обновление LiveData
+                    // Теперь обновление LiveData произойдет автоматически через Flow
                 } else {
                     // Если данные есть, просто обновляем LiveData
-                    _characters.postValue(charactersForPage)
+                    // Flow автоматически обновит LiveData при изменениях в базе
                 }
 
                 // Логируем всех персонажей из базы
@@ -85,8 +82,6 @@ class CharacterViewModel(
             }
         }
     }
-
-
 
     // Переход на следующую страницу
     fun nextPage() {
@@ -105,7 +100,3 @@ class CharacterViewModel(
     // Получение текущей страницы
     fun getCurrentPage() = currentPage
 }
-
-
-
-

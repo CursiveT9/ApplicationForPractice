@@ -56,7 +56,4 @@ class CharacterRepository(
             character.id in minId..maxId
         }
     }
-
-
-
 }

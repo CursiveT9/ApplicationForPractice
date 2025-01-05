@@ -87,11 +87,11 @@ class HomeFragment : Fragment() {
             characterViewModel.fetchCharacters(page ?: 19)
         }
 
-//        characterViewModel.characters.observe(viewLifecycleOwner) { characters ->
-//            if (characters.isNotEmpty()) {
-//                saveToDocuments(characters)
-//            }
-//        }
+        characterViewModel.characters.observe(viewLifecycleOwner) { characters ->
+            if (characters.isNotEmpty()) {
+                saveToDocuments(characters)
+            }
+        }
 
         return view
     }
